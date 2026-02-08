@@ -6,6 +6,7 @@ import com.kumadev.patternrecognition.service.patternrecognition2d.PatternRecogn
 import com.kumadev.patternrecognition.service.patternrecognition2d.dto.PointDTO;
 import com.kumadev.patternrecognition.service.patternrecognition2d.dto.PointMapper;
 import jakarta.validation.constraints.Min;
+import org.antlr.v4.runtime.misc.OrderedHashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class PatternRecognition2DController {
 
     @GetMapping(path = "/space")
     public Set<PointDTO> getAllPoints() {
-        return patternRecognitionService.getSpacePoints().stream().map(pointMapper::toDTO).collect(Collectors.toSet());
+        return patternRecognitionService.getSpacePoints().stream().map(pointMapper::toDTO).collect(Collectors.toCollection(OrderedHashSet::new));
     }
 
     @DeleteMapping(path = "/space")

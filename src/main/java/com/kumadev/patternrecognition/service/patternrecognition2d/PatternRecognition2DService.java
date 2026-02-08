@@ -6,12 +6,11 @@ import com.kumadev.patternrecognition.model.point.validation.AlreadyExistingPoin
 import com.kumadev.patternrecognition.service.PatternRecognitionService;
 import com.kumadev.patternrecognition.service.patternrecognition2d.dto.PointDTO;
 import lombok.RequiredArgsConstructor;
+import org.antlr.v4.runtime.misc.OrderedHashSet;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,7 +34,7 @@ public class PatternRecognition2DService implements PatternRecognitionService {
         Map<String, Set<Point>> slopeMap;
         // taking every point as pivot...
         for(Point pivot : space){
-            //... calculate the slope generated using each other points int he space
+            //... calculate the slope generated using each other points in the space
             slopeMap = pivot.getCollinearPoints(space.stream().filter(point -> !point.equals(pivot)).collect(Collectors.toSet()));
             if(!slopeMap.isEmpty()){
                 for(Set<Point> line : slopeMap.values()){
@@ -52,7 +51,7 @@ public class PatternRecognition2DService implements PatternRecognitionService {
 
     @Override
     public Set<Point> getSpacePoints() {
-        return Streamable.of(pointRepository.findAll()).toSet();
+        return pointRepository.findAll().stream().sorted().collect(Collectors.toCollection(OrderedHashSet::new));
     }
 
     @Override
