@@ -1,6 +1,6 @@
 package com.kumadev.patternrecognition.service;
 
-import com.kumadev.patternrecognition.model.Point;
+import com.kumadev.patternrecognition.model.point.Point;
 import com.kumadev.patternrecognition.service.patternrecognition2d.dto.PointDTO;
 
 import java.util.Set;

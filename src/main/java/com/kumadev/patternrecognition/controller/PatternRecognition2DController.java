@@ -1,11 +1,13 @@
 package com.kumadev.patternrecognition.controller;
 
 import com.kumadev.patternrecognition.MathUtils;
+import com.kumadev.patternrecognition.model.point.validation.AlreadyExistingPointException;
 import com.kumadev.patternrecognition.service.patternrecognition2d.PatternRecognition2DService;
 import com.kumadev.patternrecognition.service.patternrecognition2d.dto.PointDTO;
 import com.kumadev.patternrecognition.service.patternrecognition2d.dto.PointMapper;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,4 +48,8 @@ public class PatternRecognition2DController {
     public void deleteAllPoints() {
         patternRecognitionService.deleteAllSpacePoints();
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    private void pointNotValidHandler(AlreadyExistingPointException ex) {}
 }

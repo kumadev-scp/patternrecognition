@@ -1,14 +1,14 @@
 package com.kumadev.patternrecognition.service.patternrecognition2d;
 
 import com.kumadev.patternrecognition.data.PointRepository;
-import com.kumadev.patternrecognition.model.Point;
+import com.kumadev.patternrecognition.model.point.Point;
+import com.kumadev.patternrecognition.model.point.validation.AlreadyExistingPointException;
 import com.kumadev.patternrecognition.service.PatternRecognitionService;
 import com.kumadev.patternrecognition.service.patternrecognition2d.dto.PointDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -61,7 +61,11 @@ public class PatternRecognition2DService implements PatternRecognitionService {
     }
 
     @Override
-    public Point addPointToSpace(PointDTO p) {
-        return pointRepository.save(new Point(p.getX(), p.getY()));
+    public Point addPointToSpace(PointDTO dto) {
+        Set<Point> p = pointRepository.findByXAndY(dto.getX(),dto.getY());
+        if(!p.isEmpty()){
+            throw new AlreadyExistingPointException("This point is already present inside the space");
+        }
+        return pointRepository.save(new Point(dto.getX(), dto.getY()));
     }
 }

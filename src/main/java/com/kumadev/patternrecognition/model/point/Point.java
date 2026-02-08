@@ -1,4 +1,4 @@
-package com.kumadev.patternrecognition.model;
+package com.kumadev.patternrecognition.model.point;
 
 import com.kumadev.patternrecognition.MathUtils;
 import jakarta.persistence.Entity;

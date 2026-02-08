@@ -1,6 +1,6 @@
 package com.kumadev.patternrecognition.service.patternrecognition2d.dto;
 
-import com.kumadev.patternrecognition.model.Point;
+import com.kumadev.patternrecognition.model.point.Point;
 import org.springframework.stereotype.Component;
 
 /**
