@@ -1,17 +1,18 @@
 package com.kumadev.patternrecognition.model;
 
-import com.kumadev.patternrecognition.GeometryUtils;
+import com.kumadev.patternrecognition.MathUtils;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Objects;
+import java.util.*;
 
+/**
+ * Representation of integer point in the plane
+ */
 @Entity
 @Data
 @AllArgsConstructor
@@ -48,9 +49,28 @@ public class Point implements Comparable<Point> {
         int dy = p.y - this.y;
         int dx = p.x - this.x;
 
-        int gcd = GeometryUtils.greatCommonDivisor(dy, dx);
+        int gcd = MathUtils.greatCommonDivisor(dy, dx);
 
         return dy/gcd + "/" + dx/gcd;
+    }
+
+    /**
+     * Collects points in the space collapsing into a map using the slope from pivot
+     *
+     * @param otherPoints set including every other points in the space
+     * @return Map of points (key is the slope, value is the set of points sharing the same slope)
+     */
+    public Map<String, Set<Point>> getCollinearPoints(Set<Point> otherPoints) {
+        Map<String, Set<Point>> slopes = new HashMap<>();
+
+        for(Point p : otherPoints){
+            String slope = this.getSlope(p);
+
+            slopes.putIfAbsent(slope, new HashSet<>());
+            slopes.get(slope).add(p);
+        }
+
+        return slopes;
     }
 
     @Override

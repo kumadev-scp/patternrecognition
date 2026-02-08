@@ -3,6 +3,9 @@ package com.kumadev.patternrecognition.service.patternrecognition2d.dto;
 import com.kumadev.patternrecognition.model.Point;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mapper from {@link Point} to {@link Point DTO}
+ */
 @Component
 public class PointMapper {
     public PointDTO toDTO(Point p){

@@ -5,13 +5,18 @@ import com.kumadev.patternrecognition.model.Point;
 import com.kumadev.patternrecognition.service.PatternRecognitionService;
 import com.kumadev.patternrecognition.service.patternrecognition2d.dto.PointDTO;
 import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.misc.OrderedHashSet;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the Pattern Recognition service considering integer two-dimensional space
+ */
 @RequiredArgsConstructor
 @Service
 public class PatternRecognition2DService implements PatternRecognitionService {
@@ -27,10 +32,11 @@ public class PatternRecognition2DService implements PatternRecognitionService {
             return result;
         }
 
-        Map<String, Set<Point>> slopeMap = new HashMap<>();
-
+        Map<String, Set<Point>> slopeMap;
+        // taking every point as pivot...
         for(Point pivot : space){
-            slopeMap = getCollinearPoints(pivot, space.stream().filter(point -> !point.equals(pivot)).collect(Collectors.toSet()));
+            //... calculate the slope generated using each other points int he space
+            slopeMap = pivot.getCollinearPoints(space.stream().filter(point -> !point.equals(pivot)).collect(Collectors.toSet()));
             if(!slopeMap.isEmpty()){
                 for(Set<Point> line : slopeMap.values()){
                     if(line.size() + 1 >= n){
@@ -42,19 +48,6 @@ public class PatternRecognition2DService implements PatternRecognitionService {
         }
 
         return result;
-    }
-
-    private Map<String, Set<Point>> getCollinearPoints(Point pivot, Set<Point> otherPoints) {
-        Map<String, Set<Point>> slopes = new HashMap<>();
-
-        for(Point p : otherPoints){
-            String slope = pivot.getSlope(p);
-
-            slopes.putIfAbsent(slope, new HashSet<>());
-            slopes.get(slope).add(p);
-        }
-
-        return slopes;
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.kumadev.patternrecognition.controller;
 
+import com.kumadev.patternrecognition.MathUtils;
 import com.kumadev.patternrecognition.service.patternrecognition2d.PatternRecognition2DService;
 import com.kumadev.patternrecognition.service.patternrecognition2d.dto.PointDTO;
 import com.kumadev.patternrecognition.service.patternrecognition2d.dto.PointMapper;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@RequestMapping("/api/2dint/v1/")
 @RestController
 public class PatternRecognition2DController {
 
@@ -25,7 +28,7 @@ public class PatternRecognition2DController {
     }
 
     @GetMapping(path = "/lines/{n}")
-    public List<Set<PointDTO>> linesPerPoint(@PathVariable Integer n) {
+    public List<Set<PointDTO>> linesPerPoint(@PathVariable @Min(MathUtils.LINE_MIN_POINT_NUMBER) Integer n) {
         return patternRecognitionService.getLinesPerNPoints(n)
                 .stream()
                 .map(points -> points
